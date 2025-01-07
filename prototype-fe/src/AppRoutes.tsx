@@ -10,6 +10,7 @@ import InternshipPage from './components/InternshipPage';
 import InternshipDetails from './components/InternshipDetails';
 import StudentProfileForm from './components/StudentProfile';
 import ProfileDisplay from './components/ProfileDisplay';
+import InternshipCreationForm from './components/InternshipCreationForm';
 
 const AppRoutes: React.FC = () => {
     return (
@@ -22,6 +23,7 @@ const AppRoutes: React.FC = () => {
                 <Route path="/job/:id" element={<InternshipDetails />} />
                 <Route path="/profile-edit" element={<StudentProfileForm />} />
                 <Route path="/profile-display" element={<ProfileDisplay />} />
+                <Route path="/internship-create" element={<InternshipCreationForm />} />
             </Routes>
             <Footer />
         </>
