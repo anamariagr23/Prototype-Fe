@@ -1,9 +1,11 @@
 // import React, { useState } from "react";
 // import { Button, Modal, Form, Badge } from "react-bootstrap";
 // import "bootstrap/dist/css/bootstrap.min.css";
+// import { useNavigate } from "react-router-dom";
 
 // // Internship Card Component
 // interface InternshipCardProps {
+//     id: string; // Add unique ID for each job
 //     position: string;
 //     type: string;
 //     city: string;
@@ -11,32 +13,44 @@
 // }
 
 // const InternshipCard: React.FC<InternshipCardProps> = ({
+//     id,
 //     position,
 //     type,
 //     city,
 //     companyLogo,
 // }) => {
+//     const navigate = useNavigate();
+
+//     const handleClick = () => {
+//         navigate(`/job/${id}`); // Navigate to job details page
+//     };
+
 //     return (
-//         <div className="card mb-3 shadow-sm" style={{ maxWidth: "540px" }}>
-//             <div className="row g-0 align-items-center">
-//                 <div className="col-md-2 d-flex align-items-center justify-content-center">
+//         <div
+//             className="card mb-3 shadow-sm"
+//             style={{ width: "300px", cursor: "pointer" }}
+//             onClick={handleClick}
+//         >
+//             <div className="d-flex align-items-center h-100">
+//                 <div
+//                     className="d-flex justify-content-center align-items-center"
+//                     style={{ width: "30%", padding: "10px" }}
+//                 >
 //                     <img
 //                         src={companyLogo}
 //                         alt="Company Logo"
 //                         className="img-fluid rounded-circle"
-//                         style={{ width: "50px", height: "50px", objectFit: "cover" }}
+//                         style={{ width: "60px", height: "60px", objectFit: "cover" }}
 //                     />
 //                 </div>
-//                 <div className="col-md-10">
-//                     <div className="card-body">
-//                         <h5 className="card-title mb-1">{position}</h5>
-//                         <p className="card-text mb-1 text-muted">
-//                             <small>{type}</small>
-//                         </p>
-//                         <p className="card-text">
-//                             <small className="text-muted">{city}</small>
-//                         </p>
-//                     </div>
+//                 <div style={{ width: "70%", padding: "10px" }}>
+//                     <h5 className="card-title mb-1 text-truncate">{position}</h5>
+//                     <p className="card-text mb-1 text-muted text-truncate">
+//                         <small>{type}</small>
+//                     </p>
+//                     <p className="card-text text-muted text-truncate">
+//                         <small>{city}</small>
+//                     </p>
 //                 </div>
 //             </div>
 //         </div>
@@ -52,18 +66,21 @@
 //     // Example internships data
 //     const [internships, setInternships] = useState([
 //         {
+//             id: "1",
 //             position: "Software Engineer Intern",
 //             type: "Hybrid",
 //             city: "San Francisco, CA",
 //             companyLogo: "/ernstandyoung_logo.jpeg",
 //         },
 //         {
+//             id: "2",
 //             position: "Marketing Intern",
 //             type: "On-site",
 //             city: "New York, NY",
 //             companyLogo: "/company.jpeg",
 //         },
 //         {
+//             id: "3",
 //             position: "Graphic Designer Intern",
 //             type: "Remote",
 //             city: "Seattle, WA",
@@ -94,16 +111,12 @@
 
 //     // Filter internships based on filters
 //     const filteredInternships = internships.filter((internship) => {
-//         // Filter by search query
 //         const matchesSearch = internship.position
 //             .toLowerCase()
 //             .includes(searchQuery.toLowerCase());
-
-//         // Filter by each filter key-value pair
 //         const matchesFilters = Object.entries(filters).every(([key, value]) =>
 //             internship[key.toLowerCase() as keyof typeof internship]?.includes(value)
 //         );
-
 //         return matchesSearch && matchesFilters;
 //     });
 
@@ -140,15 +153,27 @@
 //             </div>
 
 //             {/* Internship list */}
-//             {filteredInternships.map((internship, index) => (
-//                 <InternshipCard
-//                     key={index}
-//                     position={internship.position}
-//                     type={internship.type}
-//                     city={internship.city}
-//                     companyLogo={internship.companyLogo}
-//                 />
-//             ))}
+//             <div
+//                 className="d-flex flex-wrap justify-content-center align-items-start"
+//                 style={{
+//                     gap: "20px", // Space between cards
+//                     marginTop: "20px",
+//                 }}
+//             >
+//                 {filteredInternships.length > 0 ? (
+//                     filteredInternships.map((internship, index) => (
+//                         <InternshipCard
+//                             key={index}
+//                             position={internship.position}
+//                             type={internship.type}
+//                             city={internship.city}
+//                             companyLogo={internship.companyLogo}
+//                             id={internship.id} />
+//                     ))
+//                 ) : (
+//                     <p className="text-muted">No internships found</p>
+//                 )}
+//             </div>
 
 //             {/* Filters modal */}
 //             <Modal show={showModal} onHide={handleClose}>
@@ -157,7 +182,6 @@
 //                 </Modal.Header>
 //                 <Modal.Body>
 //                     <Form>
-//                         {/* Add more filters as needed */}
 //                         <Form.Group className="mb-3">
 //                             <Form.Label>Category</Form.Label>
 //                             <Form.Control
@@ -172,7 +196,6 @@
 //                                 <option value="Design">Design</option>
 //                             </Form.Control>
 //                         </Form.Group>
-
 //                         <Form.Group className="mb-3">
 //                             <Form.Label>Location</Form.Label>
 //                             <Form.Control
@@ -183,7 +206,6 @@
 //                                 }
 //                             />
 //                         </Form.Group>
-
 //                         <Form.Group className="mb-3">
 //                             <Form.Label>Type</Form.Label>
 //                             <Form.Check
@@ -221,16 +243,14 @@
 // };
 
 // export default InternshipPage;
-
-
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Modal, Form, Badge } from "react-bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css";
 import { useNavigate } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 // Internship Card Component
 interface InternshipCardProps {
-    id: string; // Add unique ID for each job
+    id: string;
     position: string;
     type: string;
     city: string;
@@ -247,13 +267,13 @@ const InternshipCard: React.FC<InternshipCardProps> = ({
     const navigate = useNavigate();
 
     const handleClick = () => {
-        navigate(`/job/${id}`); // Navigate to job details page
+        navigate(`/job/${id}`);
     };
 
     return (
         <div
             className="card mb-3 shadow-sm"
-            style={{ width: "300px", cursor: "pointer" }}
+            style={{ width: "500px", cursor: "pointer" }}
             onClick={handleClick}
         >
             <div className="d-flex align-items-center h-100">
@@ -287,31 +307,41 @@ const InternshipPage: React.FC = () => {
     const [showModal, setShowModal] = useState(false);
     const [filters, setFilters] = useState<{ [key: string]: string }>({});
     const [searchQuery, setSearchQuery] = useState("");
+    const [internships, setInternships] = useState<InternshipCardProps[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
-    // Example internships data
-    const [internships, setInternships] = useState([
-        {
-            id: "1",
-            position: "Software Engineer Intern",
-            type: "Hybrid",
-            city: "San Francisco, CA",
-            companyLogo: "/ernstandyoung_logo.jpeg",
-        },
-        {
-            id: "2",
-            position: "Marketing Intern",
-            type: "On-site",
-            city: "New York, NY",
-            companyLogo: "/company.jpeg",
-        },
-        {
-            id: "3",
-            position: "Graphic Designer Intern",
-            type: "Remote",
-            city: "Seattle, WA",
-            companyLogo: "/ernstandyoung_logo.jpeg",
-        },
-    ]);
+    // Fetch internships from the backend
+    useEffect(() => {
+        const fetchInternships = async () => {
+            setLoading(true);
+            setError(null);
+
+            try {
+                const response = await fetch("http://localhost:7979/api/Internships/search");
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.statusText}`);
+                }
+                const data = await response.json();
+
+                // Map backend data to the component's required format
+                const mappedInternships = data.map((job: any) => ({
+                    id: job.id.toString(),
+                    position: job.position,
+                    type: job.workLocationType,
+                    city: job.city || "N/A",
+                    companyLogo: job.company.logo,
+                }));
+                setInternships(mappedInternships);
+            } catch (err: any) {
+                setError(err.message || "An error occurred while fetching internships.");
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchInternships();
+    }, []);
 
     // Open and close modal
     const handleShow = () => setShowModal(true);
@@ -344,6 +374,14 @@ const InternshipPage: React.FC = () => {
         );
         return matchesSearch && matchesFilters;
     });
+
+    if (loading) {
+        return <p>Loading internships...</p>;
+    }
+
+    if (error) {
+        return <p className="text-danger">{error}</p>;
+    }
 
     return (
         <div className="container mt-4">
@@ -393,7 +431,8 @@ const InternshipPage: React.FC = () => {
                             type={internship.type}
                             city={internship.city}
                             companyLogo={internship.companyLogo}
-                            id={internship.id} />
+                            id={internship.id}
+                        />
                     ))
                 ) : (
                     <p className="text-muted">No internships found</p>

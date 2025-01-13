@@ -4,13 +4,15 @@ import MainPage from './components/MainPage';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import AuthForm from './components/AuthForm';
-import SearchBarWithFilters from './components/SearchBarWithFilters';
-import InternshipList from './components/InternshipPage';
 import InternshipPage from './components/InternshipPage';
 import InternshipDetails from './components/InternshipDetails';
 import StudentProfileForm from './components/StudentProfile';
 import ProfileDisplay from './components/ProfileDisplay';
 import InternshipCreationForm from './components/InternshipCreationForm';
+import MyApplicationsPage from './components/MyApplicationsPage';
+import CompanyApplicationsList from './components/CompanyApplicationsList';
+import CompanyApplicationDetail from './components/CompanyApplicationDetail';
+import ProtectedRoute from './components/ProtectedRoute';
 
 const AppRoutes: React.FC = () => {
     return (
@@ -21,9 +23,58 @@ const AppRoutes: React.FC = () => {
                 <Route path="/register" element={<AuthForm />} />
                 <Route path="/main-page" element={<InternshipPage />} />
                 <Route path="/job/:id" element={<InternshipDetails />} />
-                <Route path="/profile-edit" element={<StudentProfileForm />} />
-                <Route path="/profile-display" element={<ProfileDisplay />} />
-                <Route path="/internship-create" element={<InternshipCreationForm />} />
+                
+                {/* Student Routes */}
+                <Route 
+                    path="/profile-edit" 
+                    element={
+                        <ProtectedRoute roles={['Student']}>
+                            <StudentProfileForm />
+                        </ProtectedRoute>
+                    } 
+                />
+                <Route 
+                    path="/profile-display" 
+                    element={
+                        <ProtectedRoute roles={['Student']}>
+                            <ProfileDisplay />
+                        </ProtectedRoute>
+                    } 
+                />
+                <Route 
+                    path="/my-applications" 
+                    element={
+                        <ProtectedRoute roles={['Student']}>
+                            <MyApplicationsPage />
+                        </ProtectedRoute>
+                    } 
+                />
+
+                {/* Company Employee Routes */}
+                <Route 
+                    path="/company/applications" 
+                    element={
+                        <ProtectedRoute roles={['CompanyEmployee']}>
+                            <CompanyApplicationsList />
+                        </ProtectedRoute>
+                    } 
+                />
+                <Route 
+                    path="/company/applications/:id" 
+                    element={
+                        <ProtectedRoute roles={['CompanyEmployee']}>
+                            <CompanyApplicationDetail />
+                        </ProtectedRoute>
+                    } 
+                />
+                <Route 
+                    path="/internship-create" 
+                    element={
+                        <ProtectedRoute roles={['CompanyEmployee']}>
+                            <InternshipCreationForm />
+                        </ProtectedRoute>
+                    } 
+                />
             </Routes>
             <Footer />
         </>
